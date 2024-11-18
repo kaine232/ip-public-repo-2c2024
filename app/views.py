@@ -8,30 +8,52 @@ from django.contrib.auth import logout
 def index_page(request):
     return render(request, 'index.html')
 
-# esta función obtiene 2 listados que corresponden a las imágenes de la API y los favoritos del usuario, y los usa para dibujar el correspondiente template.
-# si el opcional de favoritos no está desarrollado, devuelve un listado vacío.
+# Home: Lista de personajes y favoritos
 def home(request):
-    images = []
+    characters = [
+        {
+            "name": "Rick Sanchez",
+            "status": "Alive",
+            "url": "https://example.com/rick.png",
+            "last_location": "Tierra C-137",
+            "first_seen": "Pilot",
+        },
+        {
+            "name": "Morty Smith",
+            "status": "Dead",
+            "url": "https://example.com/morty.png",
+            "last_location": "Dimensión Cronenberg",
+            "first_seen": "Pilot",
+        },
+        {
+            "name": "Birdperson",
+            "status": "Unknown",
+            "url": "https://example.com/birdperson.png",
+            "last_location": "Planeta Fénix",
+            "first_seen": "Ricksy Business",
+        },
+    ]
+
+    # Lista de favoritos (vacía por ahora)
     favourite_list = []
 
-    return render(request, 'home.html', { 'images': images, 'favourite_list': favourite_list })
+    return render(request, 'home.html', {"characters": characters, "favourite_list": favourite_list})
 
+# Buscar personajes (pendiente de implementación)
 def search(request):
     search_msg = request.POST.get('query', '')
 
-    # si el texto ingresado no es vacío, trae las imágenes y favoritos desde services.py,
-    # y luego renderiza el template (similar a home).
-    if (search_msg != ''):
+    if search_msg != '':
+        # Implementar la lógica de búsqueda
         pass
     else:
         return redirect('home')
 
-
-# Estas funciones se usan cuando el usuario está logueado en la aplicación.
+# Favoritos (funcionalidades relacionadas con el usuario logueado)
 @login_required
 def getAllFavouritesByUser(request):
     favourite_list = []
-    return render(request, 'favourites.html', { 'favourite_list': favourite_list })
+    return render(request, 'favourites.html', {"favourite_list": favourite_list})
 
 @login_required
 def saveFavourite(request):
