@@ -4,40 +4,35 @@ from django.shortcuts import redirect, render
 from .layers.services import services
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
+#Importamos requests y json para extraer la información del link y trabajar con ella
+import requests
+import json
 
 def index_page(request):
     return render(request, 'index.html')
 
-# Home: Lista de personajes y favoritos
+# Home: Lista de imagenes y favoritos
 def home(request):
-    characters = [
-        {
-            "name": "Rick Sanchez",
-            "status": "Alive",
-            "url": "https://example.com/rick.png",
-            "last_location": "Tierra C-137",
-            "first_seen": "Pilot",
-        },
-        {
-            "name": "Morty Smith",
-            "status": "Dead",
-            "url": "https://example.com/morty.png",
-            "last_location": "Dimensión Cronenberg",
-            "first_seen": "Pilot",
-        },
-        {
-            "name": "Birdperson",
-            "status": "Unknown",
-            "url": "https://example.com/birdperson.png",
-            "last_location": "Planeta Fénix",
-            "first_seen": "Ricksy Business",
-        },
-    ]
+    #Lista para guardar las imagenes de todos los personajes
+    images = [] 
+    
+    #Variable para guardar el link con la información de todos los personajes
+    link="(https://rickandmortyapi.com/api/character)" 
+
+    #Obtiene la información de los personajes
+    contenido_link=requests.get(link)
+
+    # Hace manipulable la información de los personajes
+    data=json.loads(contenido_link.content)
+
+    #Recorre la información de todos los personajes
+    for element in data:
+        images.append(element["image"])#Guarda la imagen de todos los personajes en la lista "images"
 
     # Lista de favoritos (vacía por ahora)
     favourite_list = []
 
-    return render(request, 'home.html', {"characters": characters, "favourite_list": favourite_list})
+    return render(request, 'home.html', {"images": images, "favourite_list": favourite_list})
 
 # Buscar personajes (pendiente de implementación)
 def search(request):
