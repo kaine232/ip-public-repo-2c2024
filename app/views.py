@@ -17,7 +17,7 @@ def home(request):
     images = [] 
     
     #Variable para guardar el link con la información de todos los personajes
-    link="(https://rickandmortyapi.com/api/character)" 
+    link=("https://rickandmortyapi.com/api/character")
 
     #Obtiene la información de los personajes
     contenido_link=requests.get(link)
