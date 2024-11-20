@@ -27,7 +27,7 @@ def home(request):
 
     #Recorre la información de todos los personajes
     for element in data:
-        images.append(element["image"])#Guarda la imagen de todos los personajes en la lista "images"
+        images.append(element["images"])#Guarda la imagen de todos los personajes en la lista "images"
 
     # Lista de favoritos (vacía por ahora)
     favourite_list = []
