@@ -4,48 +4,24 @@ from django.shortcuts import redirect, render
 from .layers.services import services
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
+from app.layers.transport import transport
+import json
 
 def index_page(request):
     """Página de inicio."""
     return render(request, 'index.html')
 
+# esta función obtiene 2 listados que corresponden a las imágenes de la API y los favoritos del usuario y los usa para dibujar el correspondiente template.
+# Si el opcional de favoritos no está desarrollado, devuelve un listado vacío
 def home(request):
-    """
-    Página principal:
-    Lista personajes y favoritos del usuario.
-    """
-    # Ejemplo de personajes (esto debería venir de una API o base de datos)
-    characters = [
-        {
-            "name": "Rick Sanchez",
-            "status": "Alive",
-            "url": "https://example.com/rick.png",  # Reemplazar con URLs dinámicas o configuración
-            "last_location": "Tierra C-137",
-            "first_seen": "Pilot",
-        },
-        {
-            "name": "Morty Smith",
-            "status": "Dead",
-            "url": "https://example.com/morty.png",
-            "last_location": "Dimensión Cronenberg",
-            "first_seen": "Pilot",
-        },
-        {
-            "name": "Birdperson",
-            "status": "Unknown",
-            "url": "https://example.com/birdperson.png",
-            "last_location": "Planeta Fénix",
-            "first_seen": "Ricksy Business",
-        },
-    ]
 
-    # Lista de favoritos (vacía si no implementada)
-    favourite_list = []  # TODO: Reemplazar con lógica para obtener favoritos
+    images = [] 
+    for objeto in transport.getAllImages():
+        images.append(objeto['image'])  # Asegúrate de que 'objeto' tiene una clave 'image'
 
-    return render(request, 'home.html', {
-        "characters": characters,
-        "favourite_list": favourite_list,
-    })
+    favourite_list = []  # Este listado se puede llenar más tarde con favoritos del usuario
+
+    return render(request, 'home.html', {"images": images, "favourite_list": favourite_list})
 
 def search(request):
     """
@@ -90,3 +66,4 @@ def exit(request):
     """
     logout(request)
     return redirect('index_page')
+
