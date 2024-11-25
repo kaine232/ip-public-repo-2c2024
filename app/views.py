@@ -1,4 +1,4 @@
-# capa de vista/presentación
+# Capa de vista/presentación
 
 from django.shortcuts import redirect, render
 from .layers.services import services
@@ -6,15 +6,20 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 
 def index_page(request):
+    """Página de inicio."""
     return render(request, 'index.html')
 
-# Home: Lista de personajes y favoritos
 def home(request):
+    """
+    Página principal:
+    Lista personajes y favoritos del usuario.
+    """
+    # Ejemplo de personajes (esto debería venir de una API o base de datos)
     characters = [
         {
             "name": "Rick Sanchez",
             "status": "Alive",
-            "url": "https://example.com/rick.png",
+            "url": "https://example.com/rick.png",  # Reemplazar con URLs dinámicas o configuración
             "last_location": "Tierra C-137",
             "first_seen": "Pilot",
         },
@@ -34,35 +39,54 @@ def home(request):
         },
     ]
 
-    # Lista de favoritos (vacía por ahora)
-    favourite_list = []
+    # Lista de favoritos (vacía si no implementada)
+    favourite_list = []  # TODO: Reemplazar con lógica para obtener favoritos
 
-    return render(request, 'home.html', {"characters": characters, "favourite_list": favourite_list})
+    return render(request, 'home.html', {
+        "characters": characters,
+        "favourite_list": favourite_list,
+    })
 
-# Buscar personajes (pendiente de implementación)
 def search(request):
+    """
+    Buscar personajes por nombre.
+    """
     search_msg = request.POST.get('query', '')
 
-    if search_msg != '':
-        # Implementar la lógica de búsqueda
+    if search_msg:
+        # TODO: Implementar lógica de búsqueda (consultar API o base de datos)
         pass
     else:
         return redirect('home')
 
-# Favoritos (funcionalidades relacionadas con el usuario logueado)
 @login_required
 def getAllFavouritesByUser(request):
-    favourite_list = []
+    """
+    Obtiene los favoritos de un usuario logueado.
+    """
+    favourite_list = []  # TODO: Obtener de la base de datos
     return render(request, 'favourites.html', {"favourite_list": favourite_list})
 
 @login_required
 def saveFavourite(request):
+    """
+    Guarda un personaje en favoritos.
+    """
+    # TODO: Implementar funcionalidad para guardar en base de datos
     pass
 
 @login_required
 def deleteFavourite(request):
+    """
+    Elimina un personaje de los favoritos.
+    """
+    # TODO: Implementar funcionalidad para eliminar en base de datos
     pass
 
 @login_required
 def exit(request):
-    pass
+    """
+    Cierra sesión y redirige a la página de inicio.
+    """
+    logout(request)
+    return redirect('index_page')

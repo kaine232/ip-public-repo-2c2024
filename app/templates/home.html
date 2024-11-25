@@ -10,10 +10,11 @@
                     border-success
                 {% elif img.status == 'Dead' %}
                     border-danger
-                {% else %}
+                {% elif img.status == 'Unknown' %}
                     border-warning
                 {% endif %}" 
                 style="max-width: 540px;">
+                
                 <div class="row g-0">
                     <!-- Imagen del personaje -->
                     <div class="col-md-4">
